@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="false" userDefinedModelVersionIdentifier="">
+    <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
+        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="CachedStockHolding" representedClassName="CachedStockHolding" syncable="YES" codeGenerationType="class">
+        <attribute name="averagePrice" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="close" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="ltp" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="quantity" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="symbol" attributeType="String"/>
+        <relationship name="cacheSession" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CacheSession" inverseName="holdings" inverseEntity="CacheSession"/>
+    </entity>
+    <entity name="CacheSession" representedClassName="CacheSession" syncable="YES" codeGenerationType="class">
+        <attribute name="cacheKey" attributeType="String"/>
+        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="expiryInterval" attributeType="Double" defaultValueString="300.0" usesScalarValueType="YES"/>
+        <attribute name="isValid" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <relationship name="holdings" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CachedStockHolding" inverseName="cacheSession" inverseEntity="CachedStockHolding"/>
+    </entity>
+    <elements>
+        <element name="Item" positionX="-63" positionY="-18" width="128" height="44"/>
+        <element name="CachedStockHolding" positionX="-54" positionY="27" width="128" height="134"/>
+        <element name="CacheSession" positionX="-36" positionY="45" width="128" height="104"/>
+    </elements>
+</model>
