@@ -72,6 +72,7 @@ final class StockHoldingsRepository: StockHoldingsRepositoryProtocol {
         }
     }
     
+    /// when we don't need data from cache. 
     func forceRefresh(completion: @escaping (Result<DataResponse, Error>) -> Void) {
         queue.async { [weak self] in
             guard let self = self else { return }
