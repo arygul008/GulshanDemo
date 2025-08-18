@@ -11,13 +11,23 @@ final class StockHoldingsViewModel {
     // MARK: - Dependencies
     private let repository: StockHoldingsRepositoryProtocol
     private let queue = DispatchQueue(label: "com.gulshan.stocksholding.viewmodel", qos: .userInitiated)
+    private let loadingStateQueue = DispatchQueue(label: "com.gulshan.stocksholding.isLoading", qos: .userInitiated)
     
     // MARK: - State
     private(set) var holdings: [StockHolding] = []
     private(set) var isExpanded = false
     private(set) var currentDataSource: DataSource = .network
     private(set) var isDataStale = false
-    private(set) var isLoading = false
+    
+    private var _isLoading = false
+    private(set) var threadSafeIsLoading : Bool {
+        get {
+            loadingStateQueue.sync { _isLoading }
+        }
+        set {
+            loadingStateQueue.sync { _isLoading = newValue }
+        }
+    }
     weak var delegate: StockHoldingsViewModelDelegate?
     
     // MARK: - Computed Properties
@@ -59,7 +69,7 @@ final class StockHoldingsViewModel {
     }
     
     func fetchHoldings() {
-        guard !isLoading else {
+        guard !threadSafeIsLoading else {
             logger.log("ViewModel: Fetch already in progress, ignoring duplicate request")
             return
         }
@@ -92,7 +102,7 @@ final class StockHoldingsViewModel {
     }
     
     func forceRefresh() {
-        guard !isLoading else {
+        guard !threadSafeIsLoading else {
             logger.log("ViewModel: Force refresh already in progress, ignoring duplicate request")
             return
         }
@@ -137,7 +147,7 @@ final class StockHoldingsViewModel {
     }
     
     private func setLoadingState(_ loading: Bool) {
-        isLoading = loading
+        threadSafeIsLoading = loading
         if loading {
             delegate?.didStartLoading()
             logger.log("ViewModel: Loading started")

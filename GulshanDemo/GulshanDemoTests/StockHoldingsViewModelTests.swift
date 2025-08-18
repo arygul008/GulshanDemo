@@ -158,7 +158,7 @@ final class StockHoldingsViewModelTests: XCTestCase {
         wait(for: [expectation], timeout: 2.0)
         
         // Then
-        XCTAssertFalse(viewModel.isLoading)
+        XCTAssertFalse(viewModel.threadSafeIsLoading)
         XCTAssertEqual(viewModel.holdings.count, 2)
     }
     
@@ -182,7 +182,7 @@ final class StockHoldingsViewModelTests: XCTestCase {
         wait(for: [expectation], timeout: 2.0)
         
         // Then
-        XCTAssertFalse(viewModel.isLoading)
+        XCTAssertFalse(viewModel.threadSafeIsLoading)
         XCTAssertEqual(viewModel.holdings.count, 1)
     }
     
@@ -206,7 +206,7 @@ final class StockHoldingsViewModelTests: XCTestCase {
         
         // Then
         XCTAssertNotNil(mockDelegate.errorEncountered)
-        XCTAssertFalse(viewModel.isLoading)
+        XCTAssertFalse(viewModel.threadSafeIsLoading)
     }
     
     func testPreventsConcurrentLoading() {
@@ -232,7 +232,7 @@ final class StockHoldingsViewModelTests: XCTestCase {
         
         // Then
         XCTAssertEqual(viewModel.holdings.count, 1)
-        XCTAssertFalse(viewModel.isLoading)
+        XCTAssertFalse(viewModel.threadSafeIsLoading)
     }
     
     // MARK: - Data Source Tests
